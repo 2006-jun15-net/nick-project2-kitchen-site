@@ -1,0 +1,45 @@
+trigger:
+- master
+
+pr:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  appDir: kitchen-site
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '12.x'
+  displayName: node install
+
+- script: npm install
+  workingDirectory: $(appDir)
+  displayName: npm install
+
+- task: SonarCloudPrepare@1
+  displayName: sonarcloud prepare
+  inputs:
+    SonarCloud: 'sonarcloud-escalonn'
+    organization: '2006-jun15-net'
+    scannerMode: 'CLI'
+    configMode: 'manual'
+    cliProjectKey: '2006-jun15-net_nick-project2-kitchen-site'
+    cliSources: '$(appDir)/src'
+
+- script: npx ng build --prod
+  workingDirectory: $(appDir)
+  displayName: ng build
+
+- task: SonarCloudAnalyze@1
+  displayName: sonarcloud run
+
+- task: SonarCloudPublish@1
+  displayName: sonarcloud publish
+  inputs:
+    pollingTimeoutSec: '300'
+
+# next would be - deploy to azure app service based on what wound up in the dist/ folder.
