@@ -41,10 +41,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'ng-new'`, () => {
+  it(`should have as title 'kitchen-site'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('ng-new');
+    expect(app.title).toEqual('kitchen-site');
   });
 
   it('should render title', () => {
