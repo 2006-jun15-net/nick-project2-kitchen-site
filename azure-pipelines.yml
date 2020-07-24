@@ -42,4 +42,11 @@ steps:
   inputs:
     pollingTimeoutSec: '300'
 
-# next would be - deploy to azure app service based on what wound up in the dist/ folder.
+- task: AzureRmWebAppDeployment@4
+  displayName: azure app service deploy
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Pay-As-You-Go(1)(0518cd5b-d389-4983-9496-cdcae31dcc60)'
+    appType: 'webApp'
+    WebAppName: '2006-kitchen-site'
+    packageForLinux: '$(appDir)/dist/$(appDir)'
