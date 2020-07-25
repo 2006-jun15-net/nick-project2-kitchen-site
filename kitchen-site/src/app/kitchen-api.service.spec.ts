@@ -1,8 +1,7 @@
-import { TestBed } from '@angular/core/testing';
 
+import { of } from 'rxjs';
 import { KitchenApiService } from './kitchen-api.service';
 import FoodItem from './models/food-item';
-import { of } from 'rxjs';
 
 describe('KitchenApiService', () => {
   let httpClientSpy: { get: jasmine.Spy };
@@ -10,7 +9,7 @@ describe('KitchenApiService', () => {
 
   beforeEach(() => {
     httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
-    service = new KitchenApiService(<any>httpClientSpy);
+    service = new KitchenApiService(httpClientSpy as any);
   });
 
   it('should be created', () => {
@@ -19,7 +18,7 @@ describe('KitchenApiService', () => {
 
   it('should return expected fridge items', () => {
     const expectedItems: FoodItem[] = [
-      { id: 1, name: 'item', expirationDate: new Date(2020, 1, 1) }
+      { id: 1, name: 'item', expirationDate: new Date(2020, 1, 1) },
     ];
 
     httpClientSpy.get.and.returnValue(of(expectedItems));

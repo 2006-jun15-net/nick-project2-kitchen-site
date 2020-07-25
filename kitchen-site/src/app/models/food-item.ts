@@ -1,5 +1,5 @@
-export default interface FoodItem {
+import FoodItemCreate from './food-item-create';
+
+export default interface FoodItem extends FoodItemCreate {
   id: number;
-  name: string;
-  expirationDate: Date;
 }
