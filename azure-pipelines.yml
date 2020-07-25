@@ -28,10 +28,8 @@ steps:
     scannerMode: 'CLI'
     configMode: 'manual'
     cliProjectKey: '2006-jun15-net_nick-project2-kitchen-site'
-    cliSources: '$(appDir)/src'
-    extraProperties: |
-      sonar.coverage.exclusions=**/*.spec.ts
-      sonar.typescript.tsconfigPath=$(appDir)/tsconfig.app.json
+    cliSources: '$(appDir)/src,$(appDir)/e2e'
+    extraProperties: 'sonar.coverage.exclusions=**/*.spec.ts,$(appDir)/e2e/**/*'
 
 - script: npx ng build --prod
   workingDirectory: $(appDir)
