@@ -31,7 +31,7 @@ steps:
     cliSources: '$(appDir)/src'
     extraProperties: |
       sonar.coverage.exclusions=**/*.spec.ts
-      sonar.typescript.tsconfigPath=$(appDir)/tsconfig.json
+      sonar.typescript.tsconfigPath=$(appDir)/tsconfig.app.json
 
 - script: npx ng build --prod
   workingDirectory: $(appDir)
