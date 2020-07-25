@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { FridgeComponent } from './fridge.component';
 import { KitchenApiService } from '../kitchen-api.service';
@@ -17,6 +18,7 @@ describe('FridgeComponent', () => {
     // a KitchenApiService
     TestBed.configureTestingModule({
       declarations: [FridgeComponent],
+      imports: [ReactiveFormsModule],
       providers: [{ provide: KitchenApiService, useValue: kitchenApiService }],
     }).compileComponents();
   }));
@@ -31,8 +33,3 @@ describe('FridgeComponent', () => {
     expect(component).toBeTruthy();
   });
 });
-
-// template-driven forms
-// reactive forms
-// auth with Okta
-// HttpClient interceptor for error handling
