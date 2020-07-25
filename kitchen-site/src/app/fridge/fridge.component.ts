@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { KitchenApiService } from '../kitchen-api.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import FoodItem from '../models/food-item';
@@ -7,7 +7,6 @@ import FoodItemCreate from '../models/food-item-create';
 @Component({
   selector: 'app-fridge',
   templateUrl: './fridge.component.html',
-  styleUrls: ['./fridge.component.css'],
 })
 export class FridgeComponent {
   private openState = false;
@@ -23,7 +22,7 @@ export class FridgeComponent {
     this.openState = open;
   }
 
-  user: { admin: boolean, id: number } | null = null;
+  user: { admin: boolean; id: number } | null = null;
   fridgeItems: FoodItem[] | null = null;
   error: string | null = null;
 
@@ -74,8 +73,8 @@ export class FridgeComponent {
   }
 
   constructor(
-    private kitchenApi: KitchenApiService,
-    private formBuilder: FormBuilder
+    private readonly kitchenApi: KitchenApiService,
+    private readonly formBuilder: FormBuilder
   ) {}
 
   // this simplistic way of storing the state of the component in fields

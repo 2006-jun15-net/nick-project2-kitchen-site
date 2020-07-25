@@ -7,9 +7,9 @@ import FoodItemCreate from './models/food-item-create';
   providedIn: 'root',
 })
 export class KitchenApiService {
-  private baseUrl = 'https://localhost:44350';
+  private readonly baseUrl = 'https://localhost:44350';
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private readonly httpClient: HttpClient) {}
 
   getFridgeItems(): Promise<FoodItem[]> {
     return this.httpClient
