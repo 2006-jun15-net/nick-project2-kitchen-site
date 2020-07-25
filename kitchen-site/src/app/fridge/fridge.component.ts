@@ -23,7 +23,7 @@ export class FridgeComponent {
     this.openState = open;
   }
 
-  user = null;
+  user: { admin: boolean, id: number } | null = null;
   fridgeItems: FoodItem[] | null = null;
   error: string | null = null;
 
@@ -48,6 +48,10 @@ export class FridgeComponent {
     return this.kitchenApi.cleanFridge().then(() => {
       this.loadFridgeItems();
     });
+  }
+
+  remove(item: FoodItem): never {
+    throw new Error('Not implemented');
   }
 
   onSubmitAddItem(): void {
