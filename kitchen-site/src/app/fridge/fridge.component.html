@@ -2,7 +2,7 @@
 
 <div *ngIf="error">error: {{ error }}</div>
 
-<img [src]="imageUrl" height="400px" (click)="open = !open" />
+<img [src]="imageUrl" (click)="open = !open" height="400px" alt="fridge" />
 
 <div *ngIf="!fridgeItems">
   (fridge is closed)
