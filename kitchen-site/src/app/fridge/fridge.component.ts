@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { KitchenApiService } from '../kitchen-api.service';
 import FoodItem from '../models/food-item';
 import FoodItemCreate from '../models/food-item-create';
@@ -27,7 +28,6 @@ export class FridgeComponent {
 
   user: { admin: boolean; id: number } | null = null;
   fridgeItems: FoodItem[] | null = null;
-  error: string | null = null;
 
   addItem = this.formBuilder.group({
     itemName: ['', Validators.required],
@@ -50,10 +50,9 @@ export class FridgeComponent {
     return this.kitchenApi
       .cleanFridge()
       .then(() => {
-        this.error = null;
         this.loadFridgeItems();
       })
-      .catch(this.processHttpError);
+      .catch((e) => this.processHttpError(e));
   }
 
   remove(item: FoodItem): void {
@@ -61,13 +60,12 @@ export class FridgeComponent {
       this.kitchenApi
         .removeFridgeItem(item.id)
         .then(() => {
-          this.error = null;
           if (this.fridgeItems) {
             const index = this.fridgeItems?.indexOf(item);
             this.fridgeItems?.splice(index, 1);
           }
         })
-        .catch(this.processHttpError);
+        .catch((e) => this.processHttpError(e));
     }
   }
 
@@ -78,11 +76,11 @@ export class FridgeComponent {
       const item: FoodItemCreate = { name };
       this.kitchenApi
         .addFridgeItem(item)
-        .then((item) => {
-          this.error = null;
-          this.fridgeItems?.push(item);
+        .then((newItem) => {
+          this.fridgeItems?.push(newItem);
+          this.addItem.reset();
         })
-        .catch(this.processHttpError);
+        .catch((e) => this.processHttpError(e));
     }
   }
 
@@ -90,23 +88,25 @@ export class FridgeComponent {
     return this.kitchenApi
       .getFridgeItems()
       .then((items) => {
-        this.error = null;
         this.fridgeItems = items;
       })
-      .catch(this.processHttpError);
+      .catch((e) => this.processHttpError(e));
   }
 
-  processHttpError(error: HttpErrorResponse) {
+  processHttpError(error: HttpErrorResponse): void {
+    let message: string;
     if (error.status === 0) {
-      this.error = 'no response from server';
+      message = 'Unable to connect to server';
     } else {
-      this.error = error.statusText;
+      message = error.statusText;
     }
+    this.snackBar.open(message, 'Dismiss');
   }
 
   constructor(
     private readonly kitchenApi: KitchenApiService,
-    private readonly formBuilder: FormBuilder
+    private readonly formBuilder: FormBuilder,
+    private readonly snackBar: MatSnackBar
   ) {}
 
   // this simplistic way of storing the state of the component in fields
