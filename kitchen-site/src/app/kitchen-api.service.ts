@@ -23,9 +23,16 @@ export class KitchenApiService {
       .toPromise();
   }
 
-  cleanFridge(): Promise<void> {
-    return Promise.reject(() => {
-      throw new Error('Method not implemented.');
-    });
+  removeFridgeItem(id: number): Promise<void> {
+    return this.httpClient
+      .delete(`${this.baseUrl}/api/fridge/items/${id}`)
+      .toPromise()
+      .then();
+  }
+
+  cleanFridge(): Promise<FoodItemCreate[]> {
+    return this.httpClient
+      .post<FoodItemCreate[]>(`${this.baseUrl}/api/fridge/clean`, null)
+      .toPromise();
   }
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { KitchenApiService } from '../kitchen-api.service';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
+import { KitchenApiService } from '../kitchen-api.service';
 import FoodItem from '../models/food-item';
 import FoodItemCreate from '../models/food-item-create';
 
@@ -18,6 +19,8 @@ export class FridgeComponent {
   set open(open: boolean) {
     if (!this.openState && open) {
       this.loadFridgeItems();
+    } else if (!open) {
+      this.fridgeItems = null;
     }
     this.openState = open;
   }
@@ -32,7 +35,7 @@ export class FridgeComponent {
 
   // this is like a C# getter-only property
   get imageUrl(): string {
-    if (this.fridgeItems) {
+    if (this.open && this.fridgeItems) {
       if (this.fridgeItems.length > 0) {
         return 'assets/fridge-open.jpg';
       } else {
@@ -44,13 +47,28 @@ export class FridgeComponent {
   }
 
   cleanFridge(): Promise<void> {
-    return this.kitchenApi.cleanFridge().then(() => {
-      this.loadFridgeItems();
-    });
+    return this.kitchenApi
+      .cleanFridge()
+      .then(() => {
+        this.error = null;
+        this.loadFridgeItems();
+      })
+      .catch(this.processHttpError);
   }
 
-  remove(item: FoodItem): never {
-    throw new Error('Not implemented');
+  remove(item: FoodItem): void {
+    if (this.fridgeItems) {
+      this.kitchenApi
+        .removeFridgeItem(item.id)
+        .then(() => {
+          this.error = null;
+          if (this.fridgeItems) {
+            const index = this.fridgeItems?.indexOf(item);
+            this.fridgeItems?.splice(index, 1);
+          }
+        })
+        .catch(this.processHttpError);
+    }
   }
 
   onSubmitAddItem(): void {
@@ -58,7 +76,13 @@ export class FridgeComponent {
     if (control) {
       const name = control.value as string;
       const item: FoodItemCreate = { name };
-      this.kitchenApi.addFridgeItem(item);
+      this.kitchenApi
+        .addFridgeItem(item)
+        .then((item) => {
+          this.error = null;
+          this.fridgeItems?.push(item);
+        })
+        .catch(this.processHttpError);
     }
   }
 
@@ -69,7 +93,15 @@ export class FridgeComponent {
         this.error = null;
         this.fridgeItems = items;
       })
-      .catch((error) => (this.error = error.toString()));
+      .catch(this.processHttpError);
+  }
+
+  processHttpError(error: HttpErrorResponse) {
+    if (error.status === 0) {
+      this.error = 'no response from server';
+    } else {
+      this.error = error.statusText;
+    }
   }
 
   constructor(

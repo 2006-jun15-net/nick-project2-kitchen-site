@@ -2,23 +2,23 @@
 
 <div *ngIf="error">error: {{ error }}</div>
 
-<img [src]="imageUrl" (click)="open = !open" height="400px" alt="fridge" />
+<img [src]="imageUrl" (click)="open = !open" alt="fridge" />
 
-<div *ngIf="!fridgeItems">
+<div *ngIf="!open || !fridgeItems">
   (fridge is closed)
 </div>
-<div *ngIf="fridgeItems">
+<div *ngIf="open && fridgeItems">
   <div *ngIf="fridgeItems.length === 0">
     (fridge is empty)
   </div>
   <ul *ngIf="fridgeItems.length !== 0">
     <li *ngFor="let item of fridgeItems">
       {{ item.name }}
-      <span *ngIf="user">
-        <span *ngIf="item.ownerId === user.id">(mine)</span>
-        <span *ngIf="item.ownerId && item.ownerId !== user.id">(not mine)</span>
+      <span *ngIf="true || user">
+        <span *ngIf="item.ownerId === user?.id">(mine)</span>
+        <span *ngIf="item.ownerId && item.ownerId !== user?.id">(not mine)</span>
         <button
-          *ngIf="user.admin || item.ownerId === user.id"
+          *ngIf="true || user?.admin || item.ownerId === user?.id"
           (click)="remove(item)"
         >
           Remove
@@ -29,11 +29,11 @@
   <div *ngIf="!fridgeItems">
     (loading...)
   </div>
-  <div *ngIf="user?.admin">
+  <div *ngIf="true || user?.admin">
     <button (click)="cleanFridge()">Clean Fridge</button>
   </div>
   <form
-    *ngIf="open && user"
+    *ngIf="open && (true || user)"
     [formGroup]="addItem"
     (ngSubmit)="onSubmitAddItem()"
   >
