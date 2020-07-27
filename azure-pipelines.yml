@@ -33,11 +33,11 @@ steps:
 
 # requires some extra work iirc
 - script: npx ng e2e
-  displayName: ng test
+  displayName: ng e2e
   workingDirectory: $(appDir)
   enabled: false
 
-- script: npm run lint
+- script: npx ng lint
   displayName: ng lint
   workingDirectory: $(appDir)
 
