@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import FoodItem from './models/food-item';
 import FoodItemCreate from './models/food-item-create';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class KitchenApiService {
-  private readonly baseUrl = 'https://localhost:44350';
+  private readonly baseUrl = environment.kitchenBaseUrl;
 
   constructor(private readonly httpClient: HttpClient) {}
 
