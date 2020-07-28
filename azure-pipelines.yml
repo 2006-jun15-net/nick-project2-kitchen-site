@@ -16,7 +16,7 @@ steps:
   inputs:
     versionSpec: '12.x'
 
-- script: npm install
+- script: npm ci
   displayName: npm install
   workingDirectory: $(appDir)
 
