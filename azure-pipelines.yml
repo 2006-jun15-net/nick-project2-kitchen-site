@@ -52,7 +52,7 @@ steps:
     cliSources: '$(appDir)/src,$(appDir)/e2e'
     extraProperties: |
       sonar.coverage.exclusions=**/*.spec.ts,$(appDir)/e2e/**/*
-      sonar.typescript.lcov.reportPaths=$(appDir)/coverage/$(appDir)/lcov.info
+      sonar.javascript.lcov.reportPaths=$(appDir)/coverage/$(appDir)/lcov.info
 
 - task: SonarCloudAnalyze@1
   displayName: sonarcloud run
