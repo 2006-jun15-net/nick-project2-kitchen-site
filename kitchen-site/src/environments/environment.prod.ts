@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  kitchenBaseUrl: 'https://2006-kitchen-api.azurewebsites.net',
+  kitchenBaseUrl: 'http://52.248.41.127',
 };
